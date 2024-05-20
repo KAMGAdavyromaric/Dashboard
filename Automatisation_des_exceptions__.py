@@ -57,7 +57,7 @@ st.markdown(style, unsafe_allow_html=True)
 
 
 # Chemin du répertoire contenant les fichiers de données sur GitHub
-chemin_github = "https://github.com/KAMGAdavyromaric/Dashboard/tree/main/data"
+chemin_github = "données"
 
 # Chargement des données
 MTN_url = os.path.join(chemin_github, "CDR_MTN_not_in_CDR_OCM___MTN_vers_ORANGE_02032023.csv")
