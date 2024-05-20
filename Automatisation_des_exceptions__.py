@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 import os
+import requests
+from io import StringIO
 from io import BytesIO
 
 # Configuration de la page
@@ -65,14 +67,22 @@ OCM_url = os.path.join(chemin_github, "CDR_OCM_not_in_CDR_MTN___MTN_vers_ORANGE_
 
 @st.cache_data
 def load_data():
+    # Chargement des données MTN
+    response_mtn = requests.get(MTN_url)
+    if response_mtn.status_code != 200:
+        raise Exception("Impossible de télécharger le fichier MTN.")
+    mtn_content = StringIO(response_mtn.text)
+    MTN = pd.read_csv(mtn_content, sep=";", encoding='latin1')
     
-    MTN = pd.read_csv(MTN_url, sep=";", encoding='latin1')
-    
-    OCM = pd.read_csv(OCM_url, sep=";", encoding='latin1')
+    # Chargement des données OCM
+    response_ocm = requests.get(OCM_url)
+    if response_ocm.status_code != 200:
+        raise Exception("Impossible de télécharger le fichier OCM.")
+    ocm_content = StringIO(response_ocm.text)
+    OCM = pd.read_csv(ocm_content, sep=";", encoding='latin1')
     
     return MTN, OCM
-
-
+    
 MTN, OCM = load_data()
 
 # Chemin des fichiers
